@@ -2,38 +2,34 @@ import { IonButton, IonButtons, IonCard, IonCol, IonContent, IonGrid, IonHeader,
 import { add, pencil, trashBin } from 'ionicons/icons';
 import { useEffect, useState } from 'react';
 import { useHistory, useParams } from 'react-router';
+import Customer from './Customer';
 import { removeCustomer, saveCustomer, searchCustomers } from './CustomerApi';
 
 const CustomerList: React.FC = () => {  
   const { name } = useParams<{ name: string; }>();  
-  const [clientes, setClientes] = useState<any>([]);
+  const [clientes, setClientes] = useState<Customer[]>([]);
   const history = useHistory()
   
   useEffect(() => {
     search()
-  }, [])
+  }, [history.location.pathname]);
   
-  const search = () => {
-    let resultado = searchCustomers()
+  const search = async () => {
+    let resultado = await searchCustomers()
     setClientes(resultado)
   }
 
-  const remove = (id:string) => {
-    removeCustomer(id)
+  const remove = async (id:string) => {
+    await removeCustomer(id)
     search()
-  }
-
-  const pruebaLocalStorage = () => {
-    const ejemplo = {
-      id: '1',
-      firstName: 'Santi',
-      lastName: 'Riva'
-    }
-    saveCustomer(ejemplo)
   }
 
   const addCustomer = () => {
     history.push('/page/customer/new')
+  }
+
+  const editCustomer = (id:string) => {
+    history.push('/page/customer/' + id)
   }
 
   return (
@@ -75,18 +71,18 @@ const CustomerList: React.FC = () => {
       </IonRow>
 
 
-      {clientes.map((cliente:any) =>
+      {clientes.map((cliente:Customer) =>
       <IonRow>
-        <IonCol>{cliente.firstName} {cliente.lastName}</IonCol>
+        <IonCol>{cliente.firstname} {cliente.lastname}</IonCol>
         <IonCol>{cliente.email}</IonCol>
         <IonCol>{cliente.address}</IonCol>
         <IonCol>{cliente.phone}</IonCol>
         <IonCol>
-          <IonButton color="primary" fill="clear">
+          <IonButton onClick={() => editCustomer(String(cliente.id))} color="primary" fill="clear">
             <IonIcon icon={pencil} slot="icon-only"/>
           </IonButton>
 
-          <IonButton onClick={() => remove(cliente.id)} color="danger" fill="clear">
+          <IonButton onClick={() => remove(String(cliente.id))} color="danger" fill="clear">
             <IonIcon icon={trashBin} slot="icon-only"/>
           </IonButton>
         </IonCol>
@@ -94,11 +90,6 @@ const CustomerList: React.FC = () => {
         )}
     </IonGrid>
     </IonCard>
-
-    <IonButton onClick={pruebaLocalStorage} color="danger" fill="clear">
-          PRUEBA LOCAL STORAGE
-    </IonButton>
-
   </IonContent>
       </IonContent>
     </IonPage>

@@ -24,38 +24,55 @@ import '@ionic/react/css/display.css';
 import './theme/variables.css';
 import CustomerList from './pages/customer/CustomerList';
 import CustomerEdit from './pages/customer/CustomerEdit';
+import EmployeeList from './pages/employee/EmployeeList';
+import EmployeeEdit from './pages/employee/EmployeeEdit';
+import VendorList from './pages/supplier/SupplierList';
+import VendorEdit from './pages/supplier/SupplierEdit';
 
 setupIonicReact();
 
-const App: React.FC = () => {
-  return (
-    <IonApp>
-      <IonReactRouter>
-        <IonSplitPane contentId="main">
-          <Menu />
-          <IonRouterOutlet id="main">
-            <Route path="/" exact={true}>
-              <Redirect to="/page/Inbox" />
-            </Route>
+const App: React.FC = () => (
+  <IonApp>
+    <IonReactRouter>
+      <IonSplitPane contentId="main">
+        <Menu />
+        <IonRouterOutlet id="main">
+          <Route path="/" exact={true}>
+            <Redirect to="/page/Inbox" />
+          </Route>
 
-            <Route path="/page/:name" exact={true}>
-              <CustomerList />
-            </Route>
+          <Route path="/page/:name" exact={true}>
+            <CustomerList />
+          </Route>
 
-            <Route path="/page/customers" exact={true}>
-              <CustomerList />
-            </Route>
+          <Route path="/page/customers" exact={true}>
+            <CustomerList />
+          </Route>
 
-            <Route path="/page/customer/:id" exact={true}>
-              <CustomerEdit />
-            </Route>
+          <Route path="/page/customer/:id" exact={true}>
+            <CustomerEdit />
+          </Route>
 
+          <Route path="/page/employees" exact={true}>
+            <EmployeeList />
+          </Route>
 
-          </IonRouterOutlet>
-        </IonSplitPane>
-      </IonReactRouter>
-    </IonApp>
-  );
-};
+          <Route path="/page/employee/:id" exact={true}>
+            <EmployeeEdit />
+          </Route>
+
+          <Route path="/page/suppliers" exact={true}>
+            <VendorList />
+          </Route>
+
+          <Route path="/page/supplier/:id" exact={true}>
+            <VendorEdit />
+          </Route>
+
+        </IonRouterOutlet>
+      </IonSplitPane>
+    </IonReactRouter>
+  </IonApp>
+);
 
 export default App;

@@ -1,24 +1,46 @@
-export function searchCustomers(){
-  if(!localStorage['customers']){
-    localStorage['customers'] = '[]';
-  }
+import Customer from "./Customer";
 
-  let customers = localStorage['customers']
-  customers = JSON.parse(customers)
-  return customers
+export async function searchCustomers() {
+  let url = process.env.REACT_APP_API + 'customers'
+  let response = await fetch(url, {
+    "method": 'GET',
+    "headers": {
+      "Content-Type": 'application/json'
+    }
+  })
 
+  return await response.json();
 }
 
-export function removeCustomer(id: string){
-  let customers = searchCustomers()
-
-  let i = customers.findIndex((c:any) => c.id === id)
-  customers.splice(i, 1)
-  localStorage['customers'] = JSON.stringify(customers)
+export async function removeCustomer(id: string) {
+  let url = process.env.REACT_APP_API + 'customers/' + id
+  await fetch(url, {
+    "method": 'DELETE',
+    "headers": {
+      "Content-Type": 'application/json'
+    }
+  })
 }
 
-export function saveCustomer(customer:any){
-  let customers = searchCustomers()
-  customers.push(customer)
-  localStorage['customers'] = JSON.stringify(customers)
+export async function saveCustomer(customer: Customer) {
+  let url = process.env.REACT_APP_API + 'customers'
+  await fetch(url, {
+    "method": 'POST',
+    "body": JSON.stringify(customer),
+    "headers": {
+      "Content-Type": 'application/json'
+    }
+  });
+}
+
+export async function searchCustomerById(id: string) {
+  let url = process.env.REACT_APP_API + 'customers/' + id
+  let response = await fetch(url, {
+    "method": 'GET',
+    "headers": {
+      "Content-Type": 'application/json'
+    }
+  })
+
+  return await response.json();
 }
