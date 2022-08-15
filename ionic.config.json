@@ -1,7 +1,0 @@
-{
-  "name": "reactJava",
-  "integrations": {
-    "capacitor": {}
-  },
-  "type": "react"
-}
